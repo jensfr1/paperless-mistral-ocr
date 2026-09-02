@@ -1,0 +1,7 @@
+# Shell scripts must keep LF endings: the paperless-ngx init hook aborts
+# with "$'\r': command not found" on CRLF, and then silently runs without
+# the plugin.
+*.sh text eol=lf
+* text=auto eol=lf
+*.pdf binary
+*.png binary

@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "paperless-mistral-ocr"
+version = "0.3.0"
+description = "Mistral OCR as a remote OCR engine for Paperless-ngx"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Jens Franke" }]
+license = "GPL-3.0-or-later"
+keywords = ["paperless-ngx", "ocr", "mistral", "document-management"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "Programming Language :: Python :: 3",
+    "Topic :: Text Processing :: Indexing",
+]
+
+# No runtime dependencies: httpx, pikepdf, ocrmypdf, Pillow and pdf2image
+# all ship with the official paperless-ngx image.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9", "ruff>=0.15,<0.16"]
+
+[project.urls]
+Homepage = "https://github.com/jensfr1/paperless-mistral-ocr"
+Issues = "https://github.com/jensfr1/paperless-mistral-ocr/issues"
+
+[project.entry-points."paperless_ngx.parsers"]
+mistral_ocr = "paperless_mistral_ocr.parser:MistralOcrParser"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/paperless_mistral_ocr"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+# Rules are pinned explicitly so local runs and CI cannot drift apart when
+# ruff changes its defaults.
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
